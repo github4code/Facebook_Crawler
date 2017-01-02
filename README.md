@@ -72,7 +72,7 @@ Now, the `VoltDB` has been started successfully.
 
 ## VoltDB Introduction
 
-> The world's fastest in memory operational database [name=[VoltDB](www.voltdb.com)]
+> The world's fastest in memory operational database [[VoltDB](www.voltdb.com)]
 
 * Stable release:  `6.0 / January 27, 2016`
 * Repository: 	github.com/VoltDB/voltdb/
