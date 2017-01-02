@@ -79,7 +79,7 @@ Now, the `VoltDB` has been started successfully.
 * Operating system:	`Linux` and `Mac OSX`
 * Platform: `Java`
 
-VoltDB is a  [scale-out](http://www.ems5.com/view.php?id=308) [NewSQL]("https://en.wikipedia.org/wiki/NewSQL") relational database. Each VoltDB database is optimized for a specific application by `partitioning` the `database tables` and the `stored procedures` that access those tables across multiple "sites" or partitions on one or more host machines to create the `distributed database`. Because both the data and the work is partitioned, `multiple queries` can be run `in parallel`. 
+VoltDB is a  [scale-out](http://www.ems5.com/view.php?id=308) [NewSQL](https://en.wikipedia.org/wiki/NewSQL) relational database. Each VoltDB database is optimized for a specific application by `partitioning` the `database tables` and the `stored procedures` that access those tables across multiple "sites" or partitions on one or more host machines to create the `distributed database`. Because both the data and the work is partitioned, `multiple queries` can be run `in parallel`. 
 
 ### Partioning 
 
