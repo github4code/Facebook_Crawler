@@ -28,7 +28,7 @@ $> java version "1.8.0_111"
    Java(TM) SE Runtime Environment (build 1.8.0_111-b14)
    Java HotSpot(TM) 64-Bit Server VM (build 25.111-b14, mixed mode)
 ```
-2. Install `Voltdb` and Settings
+2. Install `VoltDB` and Settings
 ``` terminal=
 $> sudo apt-get -y install ant build-essential ant-optional default-jdk
    python cmake valgrind ntp ccache git-arch git-completion git-core
@@ -47,9 +47,9 @@ $> export CLASSPATH="$CLASSPATH:$HOME/voltdb/voltdb/*:$HOME/voltdb/lib/*:../"
 $> alias voltdb='/home/usr/voltdb/bin/sqlcmd'
 ```
 
-### Start Voltdb
+### Start VoltDB
 
-After installation, you need start the `Voltdb`
+After installation, you need start the `VoltDB`
 
 ```terminal=
 $> /home/usr/voltdb/bin/voltdb create --background
@@ -60,7 +60,7 @@ You may probably get some `ERROR` like:
 ERROR: sudo bash -c "echo never > /sys/kernel/mm/transparent_hugepage/enabled"
 ERROR: sudo bash -c "echo never > /sys/kernel/mm/transparent_hugepage/defrag"
 ```
-Follow the instructions and **restart** the `Voltdb`
+Follow the instructions and **restart** the `VoltDB`
 
 ```terminal=
 INFO: Deleting stale PID file "/home/usr/.voltdb_server/localhost_3021.pid"...
@@ -68,10 +68,52 @@ INFO: Starting VoltDB server in the background...
 INFO:   Output files are in "/home/usr/.voltdb_server".
 Background process started with process ID 2519.
 ```
-Now, the `voltdb` has been started successfully.
+Now, the `VoltDB` has been started successfully.
 
+## VoltDB Introduction
 
-## Program limitation
+> The world's fastest in memory operational database [name=[VoltDB](www.voltdb.com)]
+
+* Stable release:  `6.0 / January 27, 2016`
+* Repository: 	github.com/VoltDB/voltdb/
+* Operating system:	`Linux` and `Mac OSX`
+* Platform: `Java`
+
+VoltDB is a  [scale-out](http://www.ems5.com/view.php?id=308) [NewSQL]("https://en.wikipedia.org/wiki/NewSQL") relational database. Each VoltDB database is optimized for a specific application by `partitioning` the `database tables` and the `stored procedures` that access those tables across multiple "sites" or partitions on one or more host machines to create the `distributed database`. Because both the data and the work is partitioned, `multiple queries` can be run `in parallel`. 
+
+### Partioning 
+
+By `analyzing` and `precompiling` the data access logic in the `stored procedures`, `VoltDB` can distribute both the `data` and the `processing` associated with it to the `individual partitions` on the cluster. In this way, each partition contains a unique "slice" of the data and the data processing. Each node in the cluster can support `multiple partitions`.
+
+<img src="https://docs.voltdb.com/graphics/OverviewPictPartition.png" height="300" width="500"></img>
+
+### Serialize (Single Thread Processing)
+
+At run-time, calls to the `stored procedures` are passed to the appropriate partition. When procedures are `single-partitioned` (meaning they operate on data within a single partition) the `server process` executes the procedure by `itself`, freeing the rest of the cluster to `handle other requests in parallel`.
+
+By using `serialized processing`, VoltDB ensures transactional consistency without the overhead of `locking`, `latching`, and `transaction logs`, while partitioning lets the database handle `multiple requests` at a time. As a general rule of thumb, the more processors (and therefore the more partitions) in the cluster, the more transactions VoltDB completes per second, providing an easy, almost `linear path` for `scaling` an application's `capacity` and `performance`.
+
+<img src="https://docs.voltdb.com/graphics/OverviewPictSerialization.png" height="300" width="500"></img>
+
+### Sample code for VoltDB connection
+
+Use `Java` to send `SQL query` to `VoltDB`.
+```java=
+import org.voltdb.client.Client;
+import org.voltdb.client.ClientFactory;
+
+// Create client
+Client myApp = ClientFactory.createClient();
+
+try{
+    myApp.createConnection(ip); // Create connection to VoltDB
+    myApp.callProcedure("@AdHoc", sql); // SQL query
+}catch(Exception e){
+    e.printStackTrace();
+}
+```
+
+## Program Limitation
 
 ### Execution speed limitation
 The program runs on single thread, costing about `1 second` for each `crawling and storing`.
